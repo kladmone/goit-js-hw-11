@@ -1,5 +1,17 @@
 @import './common';
 @import './example';
 .search-form_block{
-    border: 1px solid tomato;
+    background-color: rgb(3, 3, 95);
+    display: inline-flex;
+   width: 100vw;
 }
+.search-form-txt{
+    border: none;
+}
+.btn{
+    border: none;
+}
+.search-img{
+    background-color: none;
+}
+   
