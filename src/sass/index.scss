@@ -14,4 +14,20 @@
 .search-img{
     background-color: none;
 }
-   
+
+
+.info-item {
+    margin-bottom: 5px;
+}
+.gallery{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    padding: 10px;
+  
+}
+
+.photo{
+    width: 350px;
+    height: 250px;
+}
