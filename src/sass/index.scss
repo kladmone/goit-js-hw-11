@@ -1,12 +1,18 @@
 @import './common';
 @import './example';
 .search-form_block{
-    background-color: rgb(3, 3, 95);
+    position: fixed;
+    background-color: rgb(30, 30, 169);
     display: inline-flex;
-   width: 100vw;
+   width: 100%;
+   height: 50px;
 }
 .search-form-txt{
     border: none;
+}
+.search-form{
+    display: flex;
+    align-items: center;
 }
 .btn{
     border: none;
@@ -15,19 +21,27 @@
     background-color: none;
 }
 
+.info{
+    display: flex;
+    max-width: 350px;
+}
 
 .info-item {
     margin-bottom: 5px;
+    display: flex;
+    flex-direction: column;
 }
 .gallery{
     display: flex;
     flex-wrap: wrap;
     justify-content: space-between;
-    padding: 10px;
-  
+    padding: 70px 10px 10px 10px;
 }
 
 .photo{
     width: 350px;
     height: 250px;
+}
+.loadBtn{
+text-align: center;
 }

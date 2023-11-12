@@ -1,4 +1,5 @@
 import axios from 'axios';
+let currentPage = 1;
 export async function searchImages(query) {
   const apiKey = '40604957-a713f0ac0088deb25f7100ca0';
   const apiUrl = 'https://pixabay.com/api/';
@@ -9,15 +10,19 @@ export async function searchImages(query) {
     image_type: 'photo',
     orientation: 'horizontal',
     safesearch: true,
-    page: page,
+    page: currentPage,
     per_page: perPage,
   };
 
   try {
     const response = await axios.get(apiUrl, { params });
     const images = response.data.hits;
+    currentPage += 1;
     return images;
   } catch (error) {
     console.log(error);
   }
+}
+export function resetPage() {
+  currentPage = 1;
 }
