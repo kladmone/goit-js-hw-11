@@ -1,9 +1,12 @@
 import axios from 'axios';
+
+const apiKey = '40604957-a713f0ac0088deb25f7100ca0';
+const apiUrl = 'https://pixabay.com/api/';
+const perPage = 20;
 let currentPage = 1;
+let totalHits = 0;
+
 export async function searchImages(query) {
-  const apiKey = '40604957-a713f0ac0088deb25f7100ca0';
-  const apiUrl = 'https://pixabay.com/api/';
-  const perPage = 40;
   const params = {
     key: apiKey,
     q: query,
@@ -23,6 +26,10 @@ export async function searchImages(query) {
     console.log(error);
   }
 }
+
 export function resetPage() {
   currentPage = 1;
+}
+export function getTotalHits() {
+  return totalHits;
 }
