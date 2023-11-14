@@ -1,6 +1,5 @@
 import Notiflix from 'notiflix';
 import { resetPage, searchImages } from './usersApi.js';
-import { getTotalHits } from './usersApi.js';
 
 const refs = {
   formEl: document.querySelector('.search-form'),
@@ -27,8 +26,8 @@ async function onFormSubmit(event) {
     return;
   }
   try {
-    const images = await searchImages(query);
     resetPage();
+    const images = await searchImages(query);
     if (images.length === 0) {
       Notiflix.Notify.warning(
         'Sorry, there are no images matching your search query. Please try again.'
@@ -36,16 +35,11 @@ async function onFormSubmit(event) {
       hideLoadMoreButton();
       return;
     }
+    refs.gallery.innerHTML = '';
     renderImages(images);
     showLoadMoreButton();
   } catch (error) {
     console.log(error);
-  }
-  if (!hasMoreImages(images)) {
-    Notiflix.Notify.warning(
-      "We're sorry, but you've reached the end of search results."
-    );
-    hideLoadMoreButton();
   }
 }
 
@@ -87,12 +81,7 @@ function renderTemplate({ webformatURL, likes, views, comments, downloads }) {
 }
 
 function renderImages(array) {
-  const markup = array.map(renderTemplate).join('');
+  const slicedArray = array.slice(0, 20);
+  const markup = slicedArray.map(renderTemplate).join('');
   refs.gallery.insertAdjacentHTML('beforeend', markup);
-}
-function hasMoreImages(images) {
-  const displayedImagesCount = images.length;
-  const totalHits = getTotalHits();
-
-  return displayedImagesCount < totalHits;
 }
