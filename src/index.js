@@ -1,5 +1,5 @@
 import Notiflix from 'notiflix';
-import { resetPage, searchImages } from './usersApi.js';
+import { resetPage, searchImages, perPage, currentPage } from './usersApi.js';
 
 const refs = {
   formEl: document.querySelector('.search-form'),
@@ -14,7 +14,7 @@ function showLoadMoreButton() {
   refs.loadBtnElem.classList.remove(hiddenClass);
 }
 
-function hideLoadMoreButton() {
+export function hideLoadMoreButton() {
   refs.loadBtnElem.classList.add(hiddenClass);
 }
 
@@ -27,8 +27,8 @@ async function onFormSubmit(event) {
   }
   try {
     resetPage();
-    const images = await searchImages(query);
-    if (images.length === 0) {
+    const { hits } = await searchImages(query);
+    if (hits.length === 0) {
       Notiflix.Notify.warning(
         'Sorry, there are no images matching your search query. Please try again.'
       );
@@ -36,7 +36,7 @@ async function onFormSubmit(event) {
       return;
     }
     refs.gallery.innerHTML = '';
-    renderImages(images);
+    renderImages(hits);
     showLoadMoreButton();
   } catch (error) {
     console.log(error);
@@ -46,12 +46,14 @@ async function onFormSubmit(event) {
 async function onClickLoad() {
   try {
     const query = refs.formEl.elements.searchQuery.value;
-    const images = await searchImages(query);
-    if (images.length === 0) {
+    const { hits, totalHits } = await searchImages(query);
+    if (currentPage * perPage >= totalHits) {
+      Notiflix.Notify.warning(
+        "We're sorry, but you've reached the end of search results."
+      );
       hideLoadMoreButton();
-      return;
     }
-    renderImages(images);
+    renderImages(hits);
   } catch (error) {
     console.log(error);
   }
@@ -81,7 +83,6 @@ function renderTemplate({ webformatURL, likes, views, comments, downloads }) {
 }
 
 function renderImages(array) {
-  const slicedArray = array.slice(0, 20);
-  const markup = slicedArray.map(renderTemplate).join('');
+  const markup = array.map(renderTemplate).join('');
   refs.gallery.insertAdjacentHTML('beforeend', markup);
 }
