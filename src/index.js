@@ -27,7 +27,7 @@ async function onFormSubmit(event) {
   }
   try {
     resetPage();
-    const { hits } = await searchImages(query);
+    const { hits, totalHits } = await searchImages(query);
     if (hits.length === 0) {
       Notiflix.Notify.warning(
         'Sorry, there are no images matching your search query. Please try again.'
@@ -35,9 +35,16 @@ async function onFormSubmit(event) {
       hideLoadMoreButton();
       return;
     }
+    if (perPage > totalHits) {
+      Notiflix.Notify.warning(
+        "We're sorry, but you've reached the end of search results."
+      );
+      hideLoadMoreButton();
+    } else {
+      showLoadMoreButton();
+    }
     refs.gallery.innerHTML = '';
     renderImages(hits);
-    showLoadMoreButton();
   } catch (error) {
     console.log(error);
   }
